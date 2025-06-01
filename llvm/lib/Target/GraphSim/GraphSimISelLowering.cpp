@@ -26,7 +26,7 @@
 
 using namespace llvm;
 
-static const MCPhysReg ArgGPRs[] = {GraphSim::R9, GraphSim::R10, GraphSim::R11, GraphSim::R12};
+static const MCPhysReg ArgGPRs[] = {GraphSim::X9, GraphSim::X10, GraphSim::X11, GraphSim::X12};
 
 void GraphSimTargetLowering::ReplaceNodeResults(SDNode *N,
                                            SmallVectorImpl<SDValue> &Results,
@@ -37,11 +37,11 @@ void GraphSimTargetLowering::ReplaceNodeResults(SDNode *N,
 GraphSimTargetLowering::GraphSimTargetLowering(const TargetMachine &TM,
                                      const GraphSimSubtarget &STI)
     : TargetLowering(TM), STI(STI) {
-  GRAPHSIM_DUMP_RED
+
   addRegisterClass(MVT::i32, &GraphSim::GPRRegClass);
   computeRegisterProperties(STI.getRegisterInfo());
 
-  setStackPointerRegisterToSaveRestore(GraphSim::R1);
+  setStackPointerRegisterToSaveRestore(GraphSim::X1);
 
   // setSchedulingPreference(Sched::Source);
 
@@ -63,7 +63,7 @@ GraphSimTargetLowering::GraphSimTargetLowering(const TargetMachine &TM,
 }
 
 const char *GraphSimTargetLowering::getTargetNodeName(unsigned Opcode) const {
-  GRAPHSIM_DUMP_RED
+
   switch (Opcode) {
   case GraphSimISD::CALL:
     return "GraphSimISD::CALL";
@@ -90,7 +90,7 @@ static Align getPrefTypeAlign(EVT VT, SelectionDAG &DAG) {
 
 SDValue GraphSimTargetLowering::LowerCall(TargetLowering::CallLoweringInfo &CLI,
                                      SmallVectorImpl<SDValue> &InVals) const {
-  GRAPHSIM_DUMP_RED
+
   SelectionDAG &DAG = CLI.DAG;
   SDLoc &DL = CLI.DL;
   SmallVectorImpl<ISD::OutputArg> &Outs = CLI.Outs;
@@ -203,7 +203,7 @@ SDValue GraphSimTargetLowering::LowerCall(TargetLowering::CallLoweringInfo &CLI,
 
       // Work out the address of the stack slot.
       if (!StackPtr.getNode())
-        StackPtr = DAG.getCopyFromReg(Chain, DL, GraphSim::R1, PtrVT);
+        StackPtr = DAG.getCopyFromReg(Chain, DL, GraphSim::X1, PtrVT);
       SDValue Address =
           DAG.getNode(ISD::ADD, DL, PtrVT, StackPtr,
                       DAG.getIntPtrConstant(VA.getLocMemOffset(), DL));
@@ -393,7 +393,7 @@ SDValue GraphSimTargetLowering::LowerFormalArguments(
     SDValue Chain, CallingConv::ID CallConv, bool IsVarArg,
     const SmallVectorImpl<ISD::InputArg> &Ins, const SDLoc &DL,
     SelectionDAG &DAG, SmallVectorImpl<SDValue> &InVals) const {
-  GRAPHSIM_DUMP_RED
+
   switch (CallConv) {
   default:
     report_fatal_error("Unsupported calling convention");
@@ -512,7 +512,7 @@ bool GraphSimTargetLowering::CanLowerReturn(
     CallingConv::ID CallConv, MachineFunction &MF, bool IsVarArg,
     const SmallVectorImpl<ISD::OutputArg> &Outs, LLVMContext &Context,
     const Type *RetTy) const {
-  GRAPHSIM_DUMP_RED
+
   SmallVector<CCValAssign, 16> RVLocs;
   CCState CCInfo(CallConv, IsVarArg, MF, RVLocs, Context);
   if (!CCInfo.CheckReturn(Outs, RetCC_GraphSim))
@@ -528,7 +528,7 @@ GraphSimTargetLowering::LowerReturn(SDValue Chain, CallingConv::ID CallConv,
                                const SmallVectorImpl<ISD::OutputArg> &Outs,
                                const SmallVectorImpl<SDValue> &OutVals,
                                const SDLoc &DL, SelectionDAG &DAG) const {
-  GRAPHSIM_DUMP_RED
+
   const MachineFunction &MF = DAG.getMachineFunction();
   const GraphSimSubtarget &STI = MF.getSubtarget<GraphSimSubtarget>();
 
@@ -585,7 +585,7 @@ bool GraphSimTargetLowering::isLegalAddressingMode(const DataLayout &DL,
                                               const AddrMode &AM, Type *Ty,
                                               unsigned AS,
                                               Instruction *I) const {
-  GRAPHSIM_DUMP_RED
+
   // No global is ever allowed as a base.
   if (AM.BaseGV)
     return false;

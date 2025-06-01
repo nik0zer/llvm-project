@@ -23,14 +23,14 @@ class GraphSimInst<bits<8> op, dag outs, dag ins, string asmstr, list<dag> patte
   field bits<32> Inst;
 
   bits<8> Opcode = op;
-  bits<4>  r1 = 0;
-  bits<4>  r2 = 0;
-  bits<16> r3_imm = 0;
+  bits<4>  r1;
+  bits<4>  r2;
+  bits<16> r3_imm;
 
-  let Inst{31-24} = Opcode;
-  let Inst{23-20} = r1;
-  let Inst{19-16} = r2;
-  let Inst{15-0}  = r3_imm;
+  let Inst{7-0} = Opcode;
+  let Inst{11-8} = r1;
+  let Inst{15-12} = r2;
+  let Inst{31-16}  = r3_imm;
 
   let OutOperandList = outs;
   let InOperandList  = ins;

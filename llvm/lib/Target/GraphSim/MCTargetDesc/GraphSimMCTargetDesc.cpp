@@ -22,14 +22,14 @@ using namespace llvm;
 #include "GraphSimGenSubtargetInfo.inc"
 
 static MCRegisterInfo *createGraphSimMCRegisterInfo(const Triple &TT) {
-  GRAPHSIM_DUMP_MAGENTA
+
   MCRegisterInfo *X = new MCRegisterInfo();
-  InitGraphSimMCRegisterInfo(X, GraphSim::R0);
+  InitGraphSimMCRegisterInfo(X, GraphSim::X0);
   return X;
 }
 
 static MCInstrInfo *createGraphSimMCInstrInfo() {
-  GRAPHSIM_DUMP_MAGENTA
+
   MCInstrInfo *X = new MCInstrInfo();
   InitGraphSimMCInstrInfo(X);
   return X;
@@ -37,16 +37,16 @@ static MCInstrInfo *createGraphSimMCInstrInfo() {
 
 static MCSubtargetInfo *createGraphSimMCSubtargetInfo(const Triple &TT,
                                                  StringRef CPU, StringRef FS) {
-  GRAPHSIM_DUMP_MAGENTA
+
   return createGraphSimMCSubtargetInfoImpl(TT, CPU, /*TuneCPU*/ CPU, FS);
 }
 
 static MCAsmInfo *createGraphSimMCAsmInfo(const MCRegisterInfo &MRI,
                                      const Triple &TT,
                                      const MCTargetOptions &Options) {
-  GRAPHSIM_DUMP_MAGENTA
+
   MCAsmInfo *MAI = new GraphSimELFMCAsmInfo(TT);
-  unsigned SP = MRI.getDwarfRegNum(GraphSim::R1, true);
+  unsigned SP = MRI.getDwarfRegNum(GraphSim::X1, true);
   MCCFIInstruction Inst = MCCFIInstruction::cfiDefCfa(nullptr, SP, 0);
   MAI->addInitialFrameState(Inst);
   return MAI;
@@ -57,13 +57,13 @@ static MCInstPrinter *createGraphSimMCInstPrinter(const Triple &T,
                                              const MCAsmInfo &MAI,
                                              const MCInstrInfo &MII,
                                              const MCRegisterInfo &MRI) {
-  GRAPHSIM_DUMP_MAGENTA
+
   return new GraphSimInstPrinter(MAI, MII, MRI);
 }
 
 // We need to define this function for linking succeed
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeGraphSimTargetMC() {
-  GRAPHSIM_DUMP_MAGENTA
+
   Target &TheGraphSimTarget = getTheGraphSimTarget();
   RegisterMCAsmInfoFn X(TheGraphSimTarget, createGraphSimMCAsmInfo);
   // Register the MC register info.
@@ -76,4 +76,8 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeGraphSimTargetMC() {
 
   // Register the MCInstPrinter
   TargetRegistry::RegisterMCInstPrinter(TheGraphSimTarget, createGraphSimMCInstPrinter);
+  // Register the MC Code Emitter.
+  TargetRegistry::RegisterMCCodeEmitter(TheGraphSimTarget, createGraphSimMCCodeEmitter);
+  // Register the asm backend.
+  TargetRegistry::RegisterMCAsmBackend(TheGraphSimTarget, createGraphSimAsmBackend);
 }

@@ -10,7 +10,7 @@ using namespace llvm;
 
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeGraphSimTarget() {
   // Register the target.
-  GRAPHSIM_DUMP_CYAN
+
   RegisterTargetMachine<GraphSimTargetMachine> A(getTheGraphSimTarget());
 }
 
@@ -25,7 +25,7 @@ GraphSimTargetMachine::GraphSimTargetMachine(const Target &T, const Triple &TT,
                                getEffectiveCodeModel(CM, CodeModel::Small), OL),
       TLOF(std::make_unique<TargetLoweringObjectFileELF>()),
       Subtarget(TT, std::string(CPU), std::string(FS), *this) {
-  GRAPHSIM_DUMP_CYAN
+
   initAsmInfo();
 }
 
@@ -42,7 +42,7 @@ public:
   }
 
   bool addInstSelector() override {
-    GRAPHSIM_DUMP_CYAN
+
     addPass(createGraphSimISelDag(getGraphSimTargetMachine(), getOptLevel()));
     return false;
   }
@@ -51,11 +51,11 @@ public:
 } // end anonymous namespace
 
 TargetPassConfig *GraphSimTargetMachine::createPassConfig(PassManagerBase &PM) {
-  GRAPHSIM_DUMP_CYAN
+
   return new GraphSimPassConfig(*this, PM);
 }
 
 TargetLoweringObjectFile *GraphSimTargetMachine::getObjFileLowering() const {
-  GRAPHSIM_DUMP_CYAN
+
   return TLOF.get();
 }

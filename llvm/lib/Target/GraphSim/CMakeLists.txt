@@ -9,6 +9,7 @@ tablegen(LLVM GraphSimGenMCPseudoLowering.inc -gen-pseudo-lowering)
 tablegen(LLVM GraphSimGenDAGISel.inc -gen-dag-isel)
 tablegen(LLVM GraphSimGenCallingConv.inc -gen-callingconv)
 tablegen(LLVM GraphSimGenAsmWriter.inc -gen-asm-writer)
+tablegen(LLVM GraphSimGenMCCodeEmitter.inc -gen-emitter)
 
 add_public_tablegen_target(GraphSimCommonTableGen)
 

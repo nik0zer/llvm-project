@@ -30,7 +30,7 @@ public:
   explicit GraphSimAsmPrinter(TargetMachine &TM,
                          std::unique_ptr<MCStreamer> Streamer)
       : AsmPrinter(TM, std::move(Streamer)), STI(TM.getMCSubtargetInfo()) {
-    GRAPHSIM_DUMP_GREEN
+
   }
 
   void emitInstruction(const MachineInstr *MI) override;
@@ -52,7 +52,7 @@ public:
 #include "GraphSimGenMCPseudoLowering.inc"
 
 void GraphSimAsmPrinter::emitInstruction(const MachineInstr *MI) {
-  GRAPHSIM_DUMP_GREEN
+
   // Do any auto-generated pseudo lowerings.
   if (MCInst OutInst; lowerPseudoInstExpansion(MI, OutInst)) {
     EmitToStreamer(*OutStreamer, OutInst);

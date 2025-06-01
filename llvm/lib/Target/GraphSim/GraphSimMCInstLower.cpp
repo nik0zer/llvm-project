@@ -71,7 +71,7 @@ bool llvm::LowerGraphSimMachineOperandToMCOperand(const MachineOperand &MO,
 
 bool llvm::lowerGraphSimMachineInstrToMCInst(const MachineInstr *MI, MCInst &OutMI,
                                         AsmPrinter &AP) {
-  GRAPHSIM_DUMP_RED
+
   OutMI.setOpcode(MI->getOpcode());
 
   for (const MachineOperand &MO : MI->operands()) {

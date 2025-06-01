@@ -12,7 +12,7 @@ public:
   GraphSimFrameLowering(const GraphSimSubtarget &STI)
       : TargetFrameLowering(TargetFrameLowering::StackGrowsDown, Align(4), 0),
         STI(STI) {
-    GRAPHSIM_DUMP_GREEN
+
   }
 
   /// emitProlog/emitEpilog - These methods insert prolog and epilog code into

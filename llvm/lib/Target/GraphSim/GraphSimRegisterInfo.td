@@ -6,9 +6,9 @@ class GraphSimReg<bits<16> Enc, string n> : Register<n>{
 
 // Registers
 foreach I = 0-15 in {
-    def R#I : GraphSimReg<I, "r"#I>;
+    def X#I : GraphSimReg<I, "x"#I>;
 }
 
 // Classes
 def GPR : RegisterClass<"GraphSim", [i32], 32, (add
-  R0, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15)>;
+  X0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15)>;

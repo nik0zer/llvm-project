@@ -30,20 +30,20 @@ public:
   void ParseSubtargetFeatures(StringRef CPU, StringRef TuneCPU, StringRef FS);
 
   const GraphSimTargetLowering *getTargetLowering() const override {
-    GRAPHSIM_DUMP_CYAN
+
     return &TLInfo;
   }
   const GraphSimFrameLowering *getFrameLowering() const override {
-    GRAPHSIM_DUMP_CYAN
+
     return &FrameLowering;
   }
   const GraphSimRegisterInfo *getRegisterInfo() const override {
-    GRAPHSIM_DUMP_CYAN
+
     return &RegInfo;
   }
   const GraphSimInstrInfo *getInstrInfo() const override { return &InstrInfo; }
   const SelectionDAGTargetInfo *getSelectionDAGInfo() const override {
-    GRAPHSIM_DUMP_CYAN
+
     return &TSInfo;
   }
 };

@@ -33,11 +33,11 @@ public:
   GraphSimDAGToDAGISel() = delete;
   explicit GraphSimDAGToDAGISel(GraphSimTargetMachine &TM, CodeGenOptLevel OptLevel)
       : SelectionDAGISel(TM, OptLevel) {
-    GRAPHSIM_DUMP_RED
+
   }
 
   bool runOnMachineFunction(MachineFunction &MF) override {
-    GRAPHSIM_DUMP_RED
+
     return SelectionDAGISel::runOnMachineFunction(MF);
   }
 
@@ -66,12 +66,12 @@ char GraphSimDAGToDAGISelLegacy::ID = 0;
 /// instruction scheduling.
 FunctionPass *llvm::createGraphSimISelDag(GraphSimTargetMachine &TM,
                                      CodeGenOptLevel OptLevel) {
-  GRAPHSIM_DUMP_RED
+
   return new GraphSimDAGToDAGISelLegacy(TM, OptLevel);
 }
 
 void GraphSimDAGToDAGISel::Select(SDNode *Node) {
-  GRAPHSIM_DUMP_RED
+
   if (Node->isMachineOpcode()) {
     Node->setNodeId(-1);
     return;

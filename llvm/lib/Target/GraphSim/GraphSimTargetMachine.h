@@ -20,7 +20,7 @@ public:
                    bool JIT);
 
   const GraphSimSubtarget *getSubtargetImpl(const Function &) const override {
-    GRAPHSIM_DUMP_CYAN
+
     return &Subtarget;
   }
   // Pass Pipeline Configuration

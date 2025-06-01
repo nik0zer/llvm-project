@@ -8,24 +8,24 @@ using namespace llvm;
 #define GET_REGINFO_TARGET_DESC
 #include "GraphSimGenRegisterInfo.inc"
 
-GraphSimRegisterInfo::GraphSimRegisterInfo() : GraphSimGenRegisterInfo(GraphSim::R0) {
-  GRAPHSIM_DUMP_GREEN
+GraphSimRegisterInfo::GraphSimRegisterInfo() : GraphSimGenRegisterInfo(GraphSim::X0) {
+
 }
 const MCPhysReg *
 GraphSimRegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
-  GRAPHSIM_DUMP_GREEN
+
   return CSR_GraphSim_SaveList;
 }
 
 BitVector GraphSimRegisterInfo::getReservedRegs(const MachineFunction &MF) const {
-  GRAPHSIM_DUMP_GREEN
+
   GraphSimFrameLowering const *TFI = getFrameLowering(MF);
 
   BitVector Reserved(getNumRegs());
-  Reserved.set(GraphSim::R1);
+  Reserved.set(GraphSim::X1);
 
   if (TFI->hasFP(MF)) {
-    Reserved.set(GraphSim::R2);
+    Reserved.set(GraphSim::X2);
   }
   return Reserved;
 }
@@ -37,8 +37,8 @@ bool GraphSimRegisterInfo::requiresRegisterScavenging(
 
 bool GraphSimRegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
                                           int SPAdj, unsigned FIOperandNum,
-                                          RegScavenger *RS) const {
-  GRAPHSIM_DUMP_GREEN
+                                          RegScavenger *XS) const {
+
   assert(SPAdj == 0 && "Unexpected non-zero SPAdj value");
 
   MachineInstr &MI = *II;
@@ -62,14 +62,14 @@ bool GraphSimRegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
 }
 
 Register GraphSimRegisterInfo::getFrameRegister(const MachineFunction &MF) const {
-  GRAPHSIM_DUMP_GREEN
+
   const TargetFrameLowering *TFI = getFrameLowering(MF);
-  return TFI->hasFP(MF) ? GraphSim::R2 : GraphSim::R1;
+  return TFI->hasFP(MF) ? GraphSim::X2 : GraphSim::X1;
 }
 
 const uint32_t *
 GraphSimRegisterInfo::getCallPreservedMask(const MachineFunction &MF,
                                       CallingConv::ID CC) const {
-  GRAPHSIM_DUMP_GREEN
+
   return CSR_GraphSim_RegMask;
 }
